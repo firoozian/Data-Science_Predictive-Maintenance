@@ -60,7 +60,7 @@ It focuses on data preprocessing, rolling feature generation, and building an in
 ---
 
 ### 📚 Author  
-**Maryam Karimi** — Data Science & Predictive Maintenance Enthusiast  
+
 📧 [sina.firuzian@gmail.com] 
 🌐 [https://github.com/yourusername]
 
