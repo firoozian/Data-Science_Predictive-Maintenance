@@ -1,6 +1,3 @@
-# Data-Science_Predictive-Maintenance
-A full predictive maintenance project using Python — from raw telemetry data to failure prediction and alert generation.
-
 ## ⚙️ Predictive Maintenance — 24h Failure Prediction using Random Forest  
 
 This project develops a complete end-to-end machine learning pipeline for **predicting machine failures within the next 24 hours** using telemetry data from industrial equipment.  
