@@ -1,56 +1,116 @@
-⚙️ Predictive Maintenance — 24h Failure Prediction using Random Forest
-This project develops a complete end-to-end machine learning pipeline for predicting machine failures within the next 24 hours using telemetry data from industrial equipment. It focuses on data preprocessing, rolling feature generation, and building an interpretable Random Forest model with solid evaluation metrics and clean visualization inside Jupyter.
+# ⚙️ Predictive Maintenance — 24h Failure Prediction using Random Forest + Streamlit Dashboard
 
-🚀 Key Features  
-🧹 Data Preparation  
-Loaded and cleaned multiple PdM datasets: telemetry, failures, errors, maintenance logs, and machine metadata.  
-Handled duplicates, sorted time-series data by machineID and datetime.  
-Created 24-hour ahead failure labels using as-of merge for each machine timeline.
+This project builds a **complete end-to-end machine learning pipeline** for predicting machine failures within the next 24 hours using telemetry data from industrial equipment.  
+It includes **data preprocessing, feature engineering, model training, evaluation, and interactive visualization via a Streamlit web app.**
 
-🧮 Feature Engineering  
-Computed rolling statistics (mean, std) for key sensors — voltage, rotation, pressure, and vibration — over 3H and 6H time windows.  
-Integrated machine-level data such as age and model via one-hot encoding.  
-Scaled continuous features using StandardScaler for consistent model behavior.
+---
 
-🤖 Modeling  
-Trained a RandomForestClassifier with balanced class weights to handle class imbalance.  
-Split data into 80% training / 20% testing.  
-Clean notebook workflow (no warnings, direct inline plots).
+## 🚀 Key Features
 
-📊 Evaluation  
-Metrics: ROC-AUC, PR-AUC, Precision, Recall, F1-score, and Confusion Matrix.  
-Visualized ROC Curve and Precision–Recall Curve to understand trade-offs.
+### 🧹 Data Preparation
+- Loaded and cleaned multiple PdM datasets: telemetry, failures, maintenance logs, errors, and machine metadata.  
+- Removed duplicates and sorted records by `machineID` and `datetime`.  
+- Generated 24-hour-ahead failure labels using a **forward as-of merge** per machine timeline.  
 
-📈 Results Summary (Updated)
+---
+
+### 🧮 Feature Engineering
+- Computed **rolling statistics (mean, std)** for key sensors (`volt`, `rotate`, `pressure`, `vibration`) over 3H and 6H windows.  
+- Added maintenance and error-based features:
+  - `last_maint_component`  
+  - `error_count_24h` (number of errors in the last 24 hours)  
+- Integrated machine metadata (`age`, `model`) via one-hot encoding.  
+- Standardized all numerical features using **StandardScaler** for consistent model behavior.  
+
+---
+
+### 🤖 Modeling
+- Trained a **RandomForestClassifier** with:
+  - `n_estimators=300`  
+  - `class_weight="balanced_subsample"`  
+  - `min_samples_split=4`  
+- Data split: 80% train / 20% test (stratified).  
+- Saved all trained artifacts (model, scaler, columns, threshold) for deployment.  
+
+---
+
+### 📊 Evaluation
+- Metrics:
+  - **ROC-AUC**, **PR-AUC**, **Precision**, **Recall**, **F1**, **Accuracy**
+- Plots:
+  - **ROC Curve**
+  - **Precision–Recall Curve**
+- **Threshold optimization** using F₂-score (recall-weighted).  
+
+---
+
+## 📈 Results Summary
+
 | Metric | Value | Description |
-|-------|-------|-------------|
-| **ROC-AUC** | **0.9982** | Excellent class separation |
-| **PR-AUC** | **0.9031** | Strong performance under class imbalance |
-| **Precision (failure)** | **0.848** | 84.8% of predicted failures were correct |
-| **Recall (failure)** | **0.822** | Successfully detects majority of failures |
-| **F1-score (failure)** | **0.835** | Balanced precision–recall performance |
-| **Accuracy** | **0.994** | High overall accuracy across all machines |
+|:--|:--|:--|
+| ROC-AUC | **0.9982** | Excellent class separation |
+| PR-AUC | **0.9031** | Strong performance under class imbalance |
+| Precision (failure) | **0.848** | 84.8% of predicted failures were correct |
+| Recall (failure) | **0.822** | Model detects most upcoming failures |
+| F1-score (failure) | **0.835** | Balanced precision–recall trade-off |
+| Accuracy | **0.994** | High overall accuracy |
+| Confusion Matrix | `[[68357 198], [240 1105]]` | Few false positives/negatives |
 
-**Confusion Matrix:**
-[[68357   198]  
- [  240  1105]]
+---
 
-🔥 Most Important Features  
-- `error_count_24h`  
-- `rotate_mean_6H`, `volt_mean_6H`, `vibration_mean_6H`, `pressure_mean_6H`  
-- `rotate_mean_3H`, `vibration_mean_3H`, `volt_mean_3H`, `pressure_mean_3H`  
+### 🔥 Most Important Features
+- `error_count_24h`
+- `rotate_mean_6H`, `volt_mean_6H`, `vibration_mean_6H`, `pressure_mean_6H`
+- `rotate_mean_3H`, `vibration_mean_3H`, `volt_mean_3H`, `pressure_mean_3H`
 
-🧠 Tech Stack  
-Python 3.10+ • Pandas • NumPy • Scikit-learn • Matplotlib • Joblib  
-Environment: Jupyter Notebook
+---
 
-💾 Output  
-Cleaned and labeled datasets: `tele_labeled`, `tele_feats`  
-Trained model artifact: `rf_model_notebook.joblib` (model + scaler + feature names + threshold)  
-Evaluation plots displayed inline
+## 💻 Streamlit Web App
 
+A fully interactive **Streamlit dashboard** for batch scoring and failure-risk analysis.
 
-📚 Author  
+### 🧭 App Overview
+- **Upload a CSV** with pre-engineered features (same schema as training).  
+- **Adjust decision threshold** via slider.  
+- **Instant predictions** with failure probabilities and labels.  
+- **Download results** as CSV (`predictions_pdm.csv`).  
+- Built-in **Analytics Dashboard**:
+  - ✅ Summary statistics (total samples, failure rate, avg probability)  
+  - 📊 Probability distribution histogram with threshold line  
+  - 🥧 Class distribution pie chart  
+  - ⚠️ Top-10 highest-risk samples with export option  
 
-📧 [sina.firuzian@gmail.com] 
+---
 
+### 🧩 Artifacts Used by App
+All saved in:  
+`C:\Probook\E\AI\Projects\Data Science\Predictive Maintenance\predictive_maintenance_app\artifacts`
+
+| File | Purpose |
+|------|----------|
+| `model_rf.pkl` | Trained Random Forest model |
+| `scaler.pkl` | StandardScaler for normalization |
+| `feature_columns.json` | Ordered list of feature names |
+| `best_threshold.txt` | Optimal decision threshold (F₂) |
+| `sample_features.csv` | Example input for testing the app |
+
+---
+
+## 🧠 Tech Stack
+**Python 3.10+**  
+**Pandas • NumPy • scikit-learn • Matplotlib • Streamlit • Joblib**
+
+**Environment:** Jupyter Notebook → Streamlit App  
+
+---
+
+## 💾 Outputs
+- Cleaned datasets: `tele_labeled`, `tele_feats`  
+- Trained model and scaler artifacts for deployment  
+- Visualization & analytics dashboard via Streamlit  
+
+---
+
+## 🧑‍💻 Author
+**Sina Firuzian**  
+📧 [sina.firuzian@gmail.com]  
