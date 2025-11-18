@@ -58,6 +58,16 @@ It includes **data preprocessing, feature engineering, model training, evaluatio
 
 ---
 
+🎯 Threshold Strategy (F₂-Score & Recall Priority)
+
+In predictive maintenance, missing a true failure (false negative) is far more dangerous and costly than raising a false alert.
+To prioritize early failure detection, the model uses recall-focused threshold optimization based on the F₂-score (β = 2).
+
+This shifts the decision threshold to catch more upcoming failures while keeping false alarms at a manageable level.
+
+
+---
+
 ### 🔥 Most Important Features
 - `error_count_24h`
 - `rotate_mean_6H`, `volt_mean_6H`, `vibration_mean_6H`, `pressure_mean_6H`
