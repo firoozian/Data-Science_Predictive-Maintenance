@@ -58,7 +58,7 @@ It includes **data preprocessing, feature engineering, model training, evaluatio
 
 ---
 
-🎯 Threshold Strategy (F₂-Score & Recall Priority)
+## Threshold Strategy (F₂-Score & Recall Priority)
 
 In predictive maintenance, missing a true failure (false negative) is far more dangerous and costly than raising a false alert.
 To prioritize early failure detection, the model uses recall-focused threshold optimization based on the F₂-score (β = 2).
@@ -117,8 +117,9 @@ All saved in:
 ## 💾 Outputs
 - Cleaned datasets: `tele_labeled`, `tele_feats`  
 - Trained model and scaler artifacts for deployment  
-- Visualization & analytics dashboard via Streamlit  
-
+- Visualization & analytics dashboard via Streamlit
+- Exported telemetry_eda.csv and tableau_dataset.csv for Tableau dashboards (sensor analysis and model prediction exploration).
+  
 ---
 
 ## 🧑‍💻 Author
