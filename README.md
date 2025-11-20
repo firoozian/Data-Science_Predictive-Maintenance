@@ -75,6 +75,11 @@ This shifts the decision threshold to catch more upcoming failures while keeping
 
 ---
 
+### 🔗 Live Dashboard (Demo)
+https://public.tableau.com/app/profile/sina.firoozian/viz/Book1_17631841428950/Story1
+
+---
+
 ## 💻 Streamlit Web App
 
 A fully interactive **Streamlit dashboard** for batch scoring and failure-risk analysis.
